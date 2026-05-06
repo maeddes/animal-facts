@@ -3,15 +3,15 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+        cors:
+          allowed_origins:
+            - http://*
 
 exporters:
-  debug:
   otlp:
     endpoint: "jaeger:4317"
-    tls:
-      insecure: true
-  otlphttp/prometheus:
-    endpoint: "http://prometheus:9090/api/v1/otlp"
     tls:
       insecure: true
 
@@ -23,8 +23,4 @@ service:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [otlp, debug]
-    metrics:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [otlphttp/prometheus, debug]
+      exporters: [otlp]
